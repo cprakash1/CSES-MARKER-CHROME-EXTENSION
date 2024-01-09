@@ -1,0 +1,10 @@
+{
+    "name":"CSES MARKER",
+    "description":"CSES MARKER",
+    "author":"CP",
+    "version":"1.0.0",
+    "manifest_version":3,
+    "icons":{
+        "128":"icon.png"
+    }
+}
