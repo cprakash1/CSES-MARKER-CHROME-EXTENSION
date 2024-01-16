@@ -42,11 +42,12 @@ This marker allow you to add comment and mark question as important in CSES Plat
 5. Now you can see other people comment and whether your friend mark that question as important or not.
 
 <!-- adding images -->
+<!-- image is not displaying -->
 
-![image]('./images/1.png')
-![image]('./images/2.png')
-![image]('./images/3.png')
-![image]('./images/4.png')
+![image](./images/1.png)
+![image](./images/2.png)
+![image](./images/3.png)
+![image](./images/4.png)
 
 ## IMPORTANT
 
