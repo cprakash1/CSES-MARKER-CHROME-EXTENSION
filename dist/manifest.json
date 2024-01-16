@@ -1,0 +1,29 @@
+{
+    "name":"CSES MARKER",
+    "description":"CSES MARKER",
+    "author":"CP",
+    "version":"1.0.0",
+    "manifest_version":2,
+    "icons":{
+        "128":"./assets/icon.png"
+    },
+    "host_permissions":[
+        "https://cses.fi/*"
+    ],
+    "content_scripts":[
+        {
+            "matches":[
+                "https://cses.fi/*"
+            ],
+            "js":[
+                "content.js"
+            ]
+        }
+    ],
+    "permissions":[
+        "storage"
+    ],
+    "browser_action": {
+        "default_popup": "popup.html"
+      }
+}

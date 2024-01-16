@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSES MARKER EXTENSION</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>CSES MARKER EXTENSION</h1>
+      </div>
+      <div class="content">
+        <button id="registerUserBtn">OPEN REGISTER PAGE</button>
+        <br><br>
+        <button id="registerGroupBtn">OPEN CREATE GROUP PAGE</button>
+        <br><br>
+        <button id="joiningGroupBtn">OPEN JOINING GROUP PAGE</button>
+        <br><br>
+        <div class="registerUserDiv">
+          <label for="username1">Username</label>
+          <input type="text" name="username1" id="username1" required /><br>
+          <label for="password1">Password</label>
+          <input type="password" name="password1" id="password1" required /><br>
+          <label for="email1">Email</label>
+          <input type="email" name="email1" id="email1" required /><br>
+          <button id="registerUserBtn1">Register</button>
+        </div>
+        <div class="registerGroupDiv">
+          <label for="username2">Username</label>
+          <input type="text" name="username2" id="username2" required /><br>
+          <label for="password2">Password</label>
+          <input type="password" name="password2" id="password2" required /><br>
+          <label for="text2">GroupName</label>
+          <input type="text" name="groupname2" id="groupname2" required /><br>
+          <label for="password2">GroupCode</label>
+          <input type="password" name="groupCode2" id="groupCode2" required /><br>
+          <button id="registerGroupBtn2">Create Group</button>
+        </div>
+      </div>
+        <div class="joiningGroup">
+          <label for="username3">Username</label>
+          <input type="text" name="username3" id="username3" required /><br>
+          <label for="password3">Password</label>
+          <input type="password" name="password3" id="password3" required /><br>
+          <label for="text3">GroupName</label>
+          <input type="text" name="groupname3" id="groupname3" required /><br>
+          <label for="password3">GroupCode</label>
+          <input type="password" name="groupCode3" id="groupCode3" required /><br>
+          <button id="joiningGroupBtn3">Join Group</button>
+        </div>
+      </div>
+    </div>
+    <script src="./popup.js"></script>
+  </body>
+</html>

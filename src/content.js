@@ -1,5 +1,7 @@
 console.log("Extension loaded");
 
+const fetchUrl = "http://127.0.0.1:3000";
+
 import leafstore from "leafstore-db";
 
 const db = new leafstore("CSES_MARKER_EXTENSION_DB");
@@ -270,7 +272,7 @@ document
     const username = document.querySelector("#username").value;
     const password = document.querySelector("#password").value;
     if (username === "" || password === "") return;
-    fetch("http://127.0.0.1:3000/userLogin", {
+    fetch(fetchUrl + "/userLogin", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -317,7 +319,7 @@ const sync = async () => {
   const users = await User.find({});
   if (users.length === 0) return;
   const user = users[0]._object;
-  fetch("http://127.0.0.1:3000/sync", {
+  fetch(fetchUrl + "/sync", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
