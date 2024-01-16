@@ -17,4 +17,5 @@ module.exports = {
       patterns: [{ from: "static" }],
     }),
   ],
+  devtool: "cheap-module-source-map",
 };
