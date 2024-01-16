@@ -1,6 +1,6 @@
 console.log("Extension loaded");
 
-const fetchUrl = "http://127.0.0.1:3000";
+const fetchUrl = "https://cses-marker.onrender.com";
 
 import leafstore from "leafstore-db";
 

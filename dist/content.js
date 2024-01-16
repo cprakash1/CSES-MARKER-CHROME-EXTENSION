@@ -1465,7 +1465,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var leafstore_db__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! leafstore-db */ "./node_modules/leafstore-db/index.js");
 console.log("Extension loaded");
 
-const fetchUrl = "http://127.0.0.1:3000";
+const fetchUrl = "https://cses-marker.onrender.com";
 
 
 
