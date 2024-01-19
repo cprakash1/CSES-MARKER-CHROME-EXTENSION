@@ -1545,26 +1545,6 @@ div3.innerHTML = `<button id="cses-marker-display-username"></button>
 
 //                DIV OVER
 
-//       ADDING MARK IMPORTANT BUTTON CHECKBOX BEFORE A TASK TAG
-const TASK_LI_ELEMENT = document.querySelectorAll(".task");
-TASK_LI_ELEMENT.forEach((taskElement) => {
-  const checkboxDiv = document.createElement("div");
-  checkboxDiv.className = "checkbox";
-  const checkboxInput = document.createElement("input");
-  checkboxInput.type = "checkbox";
-  const anchorElement = taskElement.querySelector("a");
-  if (anchorElement) {
-    // Extract href attribute
-    checkboxInput.className = "cses-marker-checkbox";
-    const hrefAttribute = anchorElement.getAttribute("href");
-    checkboxInput.dataset.problemId = hrefAttribute;
-    checkboxInput.dataset.problemName =
-      anchorElement.innerText || anchorElement.textContent;
-  }
-  checkboxDiv.appendChild(checkboxInput);
-  taskElement.insertBefore(checkboxDiv, taskElement.firstChild);
-});
-
 // Connect to the database
 try {
   await db.connect({
@@ -1576,6 +1556,25 @@ try {
   console.log("Connected to the database");
   const user = await User.findOne({});
   if (user) {
+    //       ADDING MARK IMPORTANT BUTTON CHECKBOX BEFORE A TASK TAG
+    const TASK_LI_ELEMENT = document.querySelectorAll(".task");
+    TASK_LI_ELEMENT.forEach((taskElement) => {
+      const checkboxDiv = document.createElement("div");
+      checkboxDiv.className = "checkbox";
+      const checkboxInput = document.createElement("input");
+      checkboxInput.type = "checkbox";
+      const anchorElement = taskElement.querySelector("a");
+      if (anchorElement) {
+        // Extract href attribute
+        checkboxInput.className = "cses-marker-checkbox";
+        const hrefAttribute = anchorElement.getAttribute("href");
+        checkboxInput.dataset.problemId = hrefAttribute;
+        checkboxInput.dataset.problemName =
+          anchorElement.innerText || anchorElement.textContent;
+      }
+      checkboxDiv.appendChild(checkboxInput);
+      taskElement.insertBefore(checkboxDiv, taskElement.firstChild);
+    });
     document.querySelector("#cses-marker-display-username").innerText =
       user.username;
     div1.style.display = "none";
