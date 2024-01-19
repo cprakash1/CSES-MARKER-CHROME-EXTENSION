@@ -3,6 +3,8 @@ var __webpack_exports__ = {};
 /*!**********************!*\
   !*** ./src/popup.js ***!
   \**********************/
+const fetchUrl = "https://cses-marker.onrender.com";
+
 const registerUserDiv = document.querySelector(".registerUserDiv");
 const registerGroupDiv = document.querySelector(".registerGroupDiv");
 const joiningGroupDiv = document.querySelector(".joiningGroup");
@@ -40,7 +42,7 @@ document.querySelector("#registerUserBtn1").addEventListener("click", () => {
   const username = document.querySelector("#username1").value;
   const password = document.querySelector("#password1").value;
   const email = document.querySelector("#email1").value;
-  fetch("http://127.0.0.1:3000/userRegister", {
+  fetch(fetchUrl + "/userRegister", {
     method: "POST",
     body: JSON.stringify({ username, password, email }),
     headers: {
@@ -68,7 +70,7 @@ document.querySelector("#registerGroupBtn2").addEventListener("click", () => {
   const password = document.querySelector("#password2").value;
   const groupname = document.querySelector("#groupname2").value;
   const groupCode = document.querySelector("#groupCode2").value;
-  fetch("http://127.0.0.1:3000/createGroup", {
+  fetch(fetchUrl + "/createGroup", {
     method: "POST",
     body: JSON.stringify({ username, password, groupname, groupCode }),
     headers: {
@@ -97,7 +99,7 @@ document.querySelector("#joiningGroupBtn3").addEventListener("click", () => {
   const password = document.querySelector("#password3").value;
   const groupname = document.querySelector("#groupname3").value;
   const groupCode = document.querySelector("#groupCode3").value;
-  fetch("http://127.0.0.1:3000/addMember", {
+  fetch(fetchUrl + "/addMember", {
     method: "POST",
     body: JSON.stringify({ username, password, groupname, groupCode }),
     headers: {

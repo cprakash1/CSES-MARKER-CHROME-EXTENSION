@@ -1539,7 +1539,7 @@ div3.id = "cses-marker-extension-root-3";
 div3.style.display = "none";
 const contentDiv3 = document.querySelector(".content");
 contentDiv2.insertBefore(div3, contentDiv3.firstChild);
-div3.innerHTML = `
+div3.innerHTML = `<button id="cses-marker-display-username"></button>
 <button id="cses-marker-sync-button">Sync</button><button id="cses-marker-logout-button">LogOut</button>
 `;
 
@@ -1565,12 +1565,6 @@ TASK_LI_ELEMENT.forEach((taskElement) => {
   taskElement.insertBefore(checkboxDiv, taskElement.firstChild);
 });
 
-const call2 = async () => {
-  const count = await User.find({});
-  const count2 = await Problem.find({});
-  console.log(count);
-  console.log(count2);
-};
 // Connect to the database
 try {
   await db.connect({
@@ -1580,8 +1574,10 @@ try {
     },
   });
   console.log("Connected to the database");
-  const users = await User.find({});
-  if (users.length !== 0) {
+  const user = await User.findOne({});
+  if (user) {
+    document.querySelector("#cses-marker-display-username").innerText =
+      user.username;
     div1.style.display = "none";
     div3.style.display = "block";
     const problemsArray = await Problem.find({});
@@ -1601,7 +1597,7 @@ try {
         taskDiv.style.backgroundColor = "white";
       }
       // make checkbox checked
-      if (checkbox && problem.user === users[0]._id && problem.isImportant) {
+      if (checkbox && problem.user === user._id && problem.isImportant) {
         checkbox.checked = problem.isImportant;
         // make anchor tag Red and bold
         if (anchorElement) {
@@ -1612,13 +1608,6 @@ try {
     });
     const navSlidebar = document.querySelector(".nav.sidebar");
     if (navSlidebar) {
-      // creating a comment div at the top to add to the sidebar
-      const commentDiv = document.createElement("div");
-      commentDiv.className = "comment";
-      commentDiv.innerHTML = `<textarea id="cses-marker-comment-input" type="text" placeholder="Add comment" style="height: 300px; display: block; width : 100%"/></textarea><button id="cses-marker-comment-button">Add</button>`;
-      navSlidebar.insertBefore(commentDiv, navSlidebar.firstChild);
-      // showing comments as a list
-      //print url of the problem
       const url = window.location.href;
       const urlArray = url.split("/");
       const problemId =
@@ -1628,6 +1617,95 @@ try {
         urlArray[urlArray.length - 2] +
         "/" +
         urlArray[urlArray.length - 1];
+      // creating a mark important checkbox at the top to add to the sidebar
+      const checkboxDiv = document.createElement("div");
+      checkboxDiv.className = "checkbox";
+      checkboxDiv.style.width = "100%";
+      checkboxDiv.style.border = "1px solid #ccc";
+      checkboxDiv.style.padding = "3px";
+      checkboxDiv.style.margin = "5px";
+      checkboxDiv.style.borderRadius = "5px";
+      checkboxDiv.style.backgroundColor = "#f1f1f1";
+      checkboxDiv.style.boxShadow = "0 0 10px #ccc";
+      const checkboxInput = document.createElement("input");
+      checkboxInput.type = "checkbox";
+      checkboxInput.className = "cses-marker-checkbox";
+      checkboxInput.dataset.problemId = problemId;
+      checkboxInput.dataset.problemName = document
+        .querySelector(".title-block")
+        .getElementsByTagName("h1")[0].innerText;
+
+      const problemToCheck = await Problem.findOne({
+        problemId: problemId,
+        user: user._id,
+      });
+      if (problemToCheck !== null && problemToCheck.isImportant) {
+        checkboxInput.checked = true;
+      }
+      checkboxDiv.innerHTML += `<label for="cses-marker-checkbox" style="font-weight: bold; display: block; margin-bottom: 2px">Mark Important</label>`;
+      checkboxDiv.appendChild(checkboxInput);
+      navSlidebar.insertBefore(checkboxDiv, navSlidebar.firstChild);
+
+      // creating a comment div at the top to add to the sidebar
+      const commentDiv = document.createElement("div");
+      commentDiv.className = "comment";
+      const problem = await Problem.findOne({
+        problemId: problemId,
+        user: user._id,
+      });
+      commentDiv.innerHTML = `<div class="comment-container" style="width:100%;">
+      <div
+      class="comment"
+      style="
+      width:100%;
+      border: 1px solid #ccc;
+          padding: 3px;
+          margin: 5px;
+          border-radius: 5px;
+          background-color: #f1f1f1;
+          box-shadow: 0 0 10px #ccc;
+          "
+          >
+          <label
+          for="comment-textarea"
+          class="comment-author"
+          style="font-weight: bold; display: block; margin-bottom: 2px"
+          >${user.username}</label
+        >
+        <textarea
+        name="comment"
+          id="cses-marker-comment-input"
+          cols="30"
+          rows="10"
+          style="
+          width: 99%;
+          height: 150px;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          padding: 5px;
+            margin: 2px 0;
+            "
+            >${problem !== null ? problem.message : ""}
+            </textarea>
+        <button
+        id="cses-marker-comment-button"
+          style="
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          padding: 5px;
+          margin: 2px 0;
+          background-color: #fff;
+          cursor: pointer;
+          font-weight: bold;
+          "
+          >
+          Comment
+        </button>
+        </div>
+    </div>`;
+      navSlidebar.insertBefore(commentDiv, navSlidebar.firstChild);
+      // showing comments as a list
+      //print url of the problem
       const commentsList = document.createElement("div");
       commentsList.className = "comment";
       const comments = await Problem.find({
@@ -1635,7 +1713,22 @@ try {
       });
       comments.forEach((comment) => {
         const commentElement = document.createElement("div");
-        commentElement.innerHTML = `${comment.username} : ${comment.message}`;
+        commentElement.innerHTML = `<div class="comment-container" style="width:100%;">
+        <div
+        class="comment"
+            style="
+            width:100%;
+              border: 1px solid #ccc;
+              padding: 3px;
+              margin: 5px;
+              border-radius: 5px;
+              background-color: #f1f1f1;
+              box-shadow: 0 0 10px #ccc;
+              "
+              >
+              <b>${comment.username}</b>: <br> ${comment.message}
+              </div>
+            </div>`;
         commentsList.appendChild(commentElement);
       });
       navSlidebar.insertBefore(commentsList, navSlidebar.firstChild);
@@ -1644,33 +1737,20 @@ try {
       document
         .querySelector("#cses-marker-comment-button")
         .addEventListener("click", async () => {
-          const users = await User.find({});
-          if (users.length === 0) return;
-          const user = users[0];
           const comment = document.querySelector(
             "#cses-marker-comment-input"
           ).value;
           // clear the input
           document.querySelector("#cses-marker-comment-input").value = "";
           if (comment === "") return;
-          const url = window.location.href;
-          const urlArray = url.split("/");
-          const problemId =
-            "/" +
-            urlArray[urlArray.length - 3] +
-            "/" +
-            urlArray[urlArray.length - 2] +
-            "/" +
-            urlArray[urlArray.length - 1];
-          const problems = await Problem.find({
-            problemId: problemId,
-            user: user._id,
-          });
           const problemName = document
             .querySelector(".title-block")
             .getElementsByTagName("h1")[0].innerText;
-          console.log(problemName);
-          if (problems.length === 0) {
+          const problem = await Problem.findOne({
+            problemId: problemId,
+            user: user._id,
+          });
+          if (problem === null) {
             const problem = {
               problemId: problemId,
               problemName: problemName,
@@ -1684,18 +1764,47 @@ try {
             }
             const newProblem = await Problem.create(problem);
             const commentElement = document.createElement("div");
-            commentElement.innerHTML = `${problem.username} : ${problem.message}`;
+            commentElement.innerHTML = `<div class="comment-container" style="width:100%;">
+          <div
+          class="comment"
+            style="
+            width:100%;
+            border: 1px solid #ccc;
+            padding: 3px;
+            margin: 5px;
+            border-radius: 5px;
+              background-color: #f1f1f1;
+              box-shadow: 0 0 10px #ccc;
+              "
+              >
+          ${problem.username} : ${problem.message}
+          </div>
+            </div>`;
             commentsList.insertBefore(commentElement, commentsList.firstChild);
             // adding problem to user
             user.questions = [...user.questions, problem];
             await user.save();
             return;
           }
-          const problem = problems[0];
           problem.message = comment;
           await problem.save();
           const commentElement = document.createElement("div");
-          commentElement.innerHTML = `${problem.problemName} : ${problem.message}`;
+          commentElement.innerHTML = `<div class="comment-container" style="width:100%;">
+          <div
+            class="comment"
+            style="
+              width:100%;
+              border: 1px solid #ccc;
+              padding: 3px;
+              margin: 5px;
+              border-radius: 5px;
+              background-color: #f1f1f1;
+              box-shadow: 0 0 10px #ccc;
+              "
+          >
+          ${problem.username} : ${problem.message}
+            </div>
+            </div>`;
           commentsList.insertBefore(commentElement, commentsList.firstChild);
           // adding problem to user
           const questions = [];
@@ -1713,10 +1822,11 @@ try {
     }
   }
 } catch (error) {
-  console.log("Error connecting to the INDEX DB database. Please try again.");
+  console.log(
+    "Error connecting to the INDEX DB database. Please try again." + error
+  );
   await User.deleteAll();
   await Problem.deleteAll();
-  call2();
   console.log(error);
 }
 
@@ -1866,6 +1976,7 @@ checkboxes.forEach((checkbox) => {
       user.questions = [...user.questions, problem];
     }
     await user.save();
+    window.location.reload();
   });
 });
 
